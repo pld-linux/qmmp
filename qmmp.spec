@@ -6,7 +6,7 @@ Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.googlecode.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	2a0d78ff3d9cda291e963765347f5396
+# Source0-md5:	8b25c607e345fba27829f7ea41ae37ba
 URL:		http://code.google.com/p/qmmp/
 BuildRequires:	QtCore-devel >= 4.3
 BuildRequires:	QtGui-devel >= 4.3
