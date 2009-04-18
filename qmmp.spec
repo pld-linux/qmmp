@@ -25,6 +25,7 @@ BuildRequires:	libsndfile-devel >= 1.0.17
 BuildRequires:	libvorbis-devel
 BuildRequires:	pulseaudio-devel >= 0.9.9
 BuildRequires:	rpmbuild(macros) >= 1.129
+BuildRequires:	qt4-linguist
 BuildRequires:	sed >= 4.0
 BuildRequires:	taglib-devel >= 1.4.0
 BuildRequires:	wavpack-devel >= 4.41
