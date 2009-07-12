@@ -13,7 +13,7 @@ BuildRequires:	QtCore-devel >= 4.3
 BuildRequires:	QtGui-devel >= 4.3
 BuildRequires:	alsa-lib-devel >= 1.0.1
 BuildRequires:	cmake
-BuildRequires:	curl >= 7.16
+BuildRequires:	curl-devel >= 7.16
 BuildRequires:	ffmpeg-devel >= 0.4.9
 BuildRequires:	flac-devel >= 1.1.3
 BuildRequires:	gettext-devel
