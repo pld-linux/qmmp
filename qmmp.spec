@@ -1,12 +1,13 @@
 Summary:	XMMS like audio player written in Qt
+Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS napisany w Qt
 Name:		qmmp
-Version:	0.2.4
-Release:	2
+Version:	0.3.0
+Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.googlecode.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	8b25c607e345fba27829f7ea41ae37ba
+# Source0-md5:	ba85e2e288a0e6461f95c1928e8946a4
 URL:		http://code.google.com/p/qmmp/
 BuildRequires:	QtCore-devel >= 4.3
 BuildRequires:	QtGui-devel >= 4.3
@@ -24,8 +25,8 @@ BuildRequires:	libsamplerate-devel >= 0.1.2
 BuildRequires:	libsndfile-devel >= 1.0.17
 BuildRequires:	libvorbis-devel
 BuildRequires:	pulseaudio-devel >= 0.9.9
-BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	qt4-linguist
+BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
 BuildRequires:	taglib-devel >= 1.4.0
 BuildRequires:	wavpack-devel >= 4.41
@@ -37,6 +38,12 @@ Audio player that supports:
 - file formats among: Vorbis, FLAC, MPEG1, WMA, WAV,
 - plugins,
 - Winamp and XMMS skins and more.
+
+%description -l hu.UTF-8
+A lejátszó a következőket támogatja:
+- fájlformátumok: Vorbis, FLAC, MPEG1, WMA, WAV
+- pluginok
+- Wnamp és XMMS szkinek és még sok mást.
 
 %description -l pl.UTF-8
 Odtwarzacz audio wspierający:
@@ -99,6 +106,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.0
 %attr(755,root,root) %{_libdir}/qmmp/
 %{_desktopdir}/qmmp.desktop
+%{_desktopdir}/qmmp_cue.desktop
+%{_desktopdir}/qmmp_enqueue.desktop
 %{_iconsdir}/hicolor/*/apps/qmmp.png
 
 %files devel
