@@ -60,7 +60,7 @@ Group:		Development/Libraries
 %description devel
 Header files for qmmp
 
-%description -l pl.UTF-8
+%description devel -l pl.UTF-8
 Pliki nagłówkowe qmmp
 
 
