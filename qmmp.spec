@@ -1,26 +1,37 @@
+# TODO:
+# BS2B Plugin .......................disabled
+
 Summary:	XMMS like audio player written in Qt
 Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS napisany w Qt
 Name:		qmmp
-Version:	0.5.2
+Version:	0.5.5
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.googlecode.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	20852f3cce3471bfc5affa9b2e947dc6
+# Source0-md5:	8174905dcf7ae6fedaf044fda51e7314
 URL:		http://code.google.com/p/qmmp/
 BuildRequires:	QtCore-devel >= 4.3
 BuildRequires:	QtGui-devel >= 4.3
 BuildRequires:	alsa-lib-devel >= 1.0.1
 BuildRequires:	cmake
 BuildRequires:	curl-devel >= 7.16
+BuildRequires:	enca-devel >= 1.9
+BuildRequires:	faad2-devel
 BuildRequires:	ffmpeg-devel >= 0.4.9
 BuildRequires:	flac-devel >= 1.1.3
+BuildRequires:	game-music-emu-devel
 BuildRequires:	gettext-devel
 BuildRequires:	jack-audio-connection-kit-devel >= 0.102.5
+BuildRequires:	libcddb-devel
+BuildRequires:	libcdio-devel
+BuildRequires:	libcdio-devel
 BuildRequires:	libmad-devel
+BuildRequires:	libmms-devel
 BuildRequires:	libmodplug-devel >= 0.8.4
 BuildRequires:	libmpcdec-devel >= 1.2.6
+BuildRequires:	libprojectM-devel >= 2.0.0
 BuildRequires:	libsamplerate-devel >= 0.1.2
 BuildRequires:	libsndfile-devel >= 1.0.17
 BuildRequires:	libvorbis-devel
@@ -30,6 +41,7 @@ BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
 BuildRequires:	taglib-devel >= 1.4.0
 BuildRequires:	wavpack-devel >= 4.41
+BuildRequires:	wildmidi-devel
 Requires(post,postun):	/sbin/ldconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -108,7 +120,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/qmmp.desktop
 %{_desktopdir}/qmmp_cue.desktop
 %{_desktopdir}/qmmp_enqueue.desktop
+%dir %{_datadir}/qmmp
+%dir %{_datadir}/qmmp/images
+%{_datadir}/qmmp/images/*.png
 %{_iconsdir}/hicolor/*/apps/qmmp.png
+%{_iconsdir}/hicolor/scalable/apps/*.svgz
 
 %files devel
 %defattr(644,root,root,755)
