@@ -5,18 +5,19 @@ Summary:	XMMS like audio player written in Qt
 Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS napisany w Qt
 Name:		qmmp
-Version:	0.6.4
-Release:	2
+Version:	0.6.6
+Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.googlecode.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	134e9b5187e73f0fd333b7b6c9e8672b
+# Source0-md5:	0131a9bf7b98737c1a6fd6e1a897e2b2
+Patch0:		%{name}-cdio.patch
 URL:		http://code.google.com/p/qmmp/
+BuildRequires:	Qt3Support-devel
 BuildRequires:	QtCore-devel >= 4.3
 BuildRequires:	QtGui-devel >= 4.3
 BuildRequires:	QtNetwork-devel
 BuildRequires:	QtOpenGL-devel
-BuildRequires:	Qt3Support-devel
 BuildRequires:	alsa-lib-devel >= 1.0.1
 BuildRequires:	cmake
 BuildRequires:	curl-devel >= 7.16
@@ -81,6 +82,7 @@ Pliki nagłówkowe qmmp
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 install -d build
@@ -123,6 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/qmmp.desktop
 %{_desktopdir}/qmmp_cue.desktop
 %{_desktopdir}/qmmp_enqueue.desktop
+%{_desktopdir}/qmmp_dir.desktop
 %dir %{_datadir}/qmmp
 %dir %{_datadir}/qmmp/images
 %{_datadir}/qmmp/images/*.png
@@ -135,3 +138,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/qmmpui
 %attr(755,root,root) %{_libdir}/libqmmp.so
 %attr(755,root,root) %{_libdir}/libqmmpui.so
+%{_pkgconfigdir}/qmmp.pc
+%{_pkgconfigdir}/qmmpui.pc
