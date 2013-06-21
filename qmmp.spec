@@ -2,12 +2,12 @@ Summary:	XMMS like audio player written in Qt
 Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS napisany w Qt
 Name:		qmmp
-Version:	0.6.8
+Version:	0.7.1
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.googlecode.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	019e10a6e92280b273db8ecb8433afd2
+# Source0-md5:	d5ecc15134eefc1b8af4220540a65f19
 URL:		http://code.google.com/p/qmmp/
 BuildRequires:	Qt3Support-devel
 BuildRequires:	QtCore-devel >= 4.6
@@ -36,6 +36,7 @@ BuildRequires:	libprojectM-devel >= 2.0.0
 BuildRequires:	libsamplerate-devel >= 0.1.2
 BuildRequires:	libsndfile-devel >= 1.0.17
 BuildRequires:	libvorbis-devel
+BuildRequires:	opusfile-devel >= 0.2
 BuildRequires:	pulseaudio-devel >= 0.9.15
 BuildRequires:	qt4-linguist
 BuildRequires:	rpmbuild(macros) >= 1.129
