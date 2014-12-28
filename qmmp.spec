@@ -22,7 +22,7 @@ BuildRequires:	faad2-devel
 BuildRequires:	ffmpeg-devel >= 0.4.9
 BuildRequires:	flac-devel >= 1.1.3
 BuildRequires:	game-music-emu-devel
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	jack-audio-connection-kit-devel >= 0.102.5
 BuildRequires:	libbs2b-devel >= 3.0.0
 BuildRequires:	libcddb-devel
