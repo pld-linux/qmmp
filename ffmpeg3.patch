@@ -1,0 +1,195 @@
+diff -ur qmmp-0.7.1/src/plugins/Input/ffmpeg/decoder_ffmpeg.cpp qmmp-0.7.1.ffmpeg3/src/plugins/Input/ffmpeg/decoder_ffmpeg.cpp
+--- qmmp-0.7.1/src/plugins/Input/ffmpeg/decoder_ffmpeg.cpp	2013-05-31 11:03:32.000000000 +0200
++++ qmmp-0.7.1.ffmpeg3/src/plugins/Input/ffmpeg/decoder_ffmpeg.cpp	2016-04-16 19:21:32.427821767 +0200
+@@ -187,9 +187,9 @@
+     }
+ 
+     if (c->channels > 0)
+-         c->request_channels = qMin(2, c->channels);
++         c->request_channel_layout = av_get_default_channel_layout(qMin(2, c->channels));
+     else
+-         c->request_channels = 2;
++         c->request_channel_layout = av_get_default_channel_layout(2);
+ 
+     av_dump_format(ic,0,0,0);
+ 
+@@ -207,11 +207,11 @@
+         return false;
+     }
+ 
+-    m_decoded_frame = avcodec_alloc_frame();
++    m_decoded_frame = av_frame_alloc();
+ 
+     m_totalTime = input()->isSequential() ? 0 : ic->duration * 1000 / AV_TIME_BASE;
+ 
+-    if(c->codec_id == CODEC_ID_SHORTEN) //ffmpeg bug workaround
++    if(c->codec_id == AV_CODEC_ID_SHORTEN) //ffmpeg bug workaround
+         m_totalTime = 0;
+ 
+     Qmmp::AudioFormat format = Qmmp::PCM_UNKNOWM;
+@@ -236,7 +236,7 @@
+         return false;
+     }
+ 
+-    configure(c->sample_rate, c->request_channels, format);
++    configure(c->sample_rate, av_get_channel_layout_nb_channels(c->request_channel_layout), format);
+ 
+     if(ic->bit_rate)
+         m_bitrate = ic->bit_rate/1000;
+@@ -273,7 +273,7 @@
+         return 0;
+     qint64 len = qMin(m_output_at, maxSize);
+ 
+-    if(av_sample_fmt_is_planar(c->sample_fmt) && c->request_channels > 1)
++    if(av_sample_fmt_is_planar(c->sample_fmt) && av_get_channel_layout_nb_channels(c->request_channel_layout) > 1)
+     {
+         int bps = av_get_bytes_per_sample(c->sample_fmt);
+         for(int i = 0; i < len >> 1; i+=bps)
+@@ -314,7 +314,7 @@
+     int got_frame = 0;
+     if((m_pkt.stream_index == wma_idx))
+     {
+-        avcodec_get_frame_defaults(m_decoded_frame);
++        av_frame_unref(m_decoded_frame);
+ 
+         int  l = avcodec_decode_audio4(c, m_decoded_frame, &got_frame, &m_temp_pkt);
+ 
+@@ -372,7 +372,7 @@
+                 m_temp_pkt.size = 0;
+                 continue;
+             }
+-            if(m_seekTime && c->codec_id == CODEC_ID_APE)
++            if(m_seekTime && c->codec_id == AV_CODEC_ID_APE)
+             {
+                 int64_t rescaledPts = av_rescale(m_pkt.pts,
+                                                  AV_TIME_BASE * (int64_t)
+@@ -385,7 +385,7 @@
+             m_seekTime = 0;
+         }
+ 
+-        if(m_skipBytes > 0 && c->codec_id == CODEC_ID_APE)
++        if(m_skipBytes > 0 && c->codec_id == AV_CODEC_ID_APE)
+         {
+             while (m_skipBytes > 0)
+             {
+@@ -414,7 +414,7 @@
+             m_output_at = 0;
+             m_temp_pkt.size = 0;
+ 
+-            if(c->codec_id == CODEC_ID_SHORTEN || c->codec_id == CODEC_ID_TWINVQ)
++            if(c->codec_id == AV_CODEC_ID_SHORTEN || c->codec_id == AV_CODEC_ID_TWINVQ)
+             {
+                 if(m_pkt.data)
+                     av_free_packet(&m_pkt);
+@@ -425,7 +425,7 @@
+         }
+         else if(m_output_at == 0)
+         {
+-            if(c->codec_id == CODEC_ID_SHORTEN || c->codec_id == CODEC_ID_TWINVQ)
++            if(c->codec_id == AV_CODEC_ID_SHORTEN || c->codec_id == AV_CODEC_ID_TWINVQ)
+                 continue;
+ 
+             if(m_pkt.data)
+diff -ur qmmp-0.7.1/src/plugins/Input/ffmpeg/decoderffmpegfactory.cpp qmmp-0.7.1.ffmpeg3/src/plugins/Input/ffmpeg/decoderffmpegfactory.cpp
+--- qmmp-0.7.1/src/plugins/Input/ffmpeg/decoderffmpegfactory.cpp	2013-05-31 11:03:32.000000000 +0200
++++ qmmp-0.7.1.ffmpeg3/src/plugins/Input/ffmpeg/decoderffmpegfactory.cpp	2016-04-16 19:21:58.867842241 +0200
+@@ -95,29 +95,29 @@
+     filters = settings.value("FFMPEG/filters", filters).toStringList();
+ 
+     //removed unsupported filters
+-    if(!avcodec_find_decoder(CODEC_ID_WMAV1))
++    if(!avcodec_find_decoder(AV_CODEC_ID_WMAV1))
+         filters.removeAll("*.wma");
+-    if(!avcodec_find_decoder(CODEC_ID_APE))
++    if(!avcodec_find_decoder(AV_CODEC_ID_APE))
+         filters.removeAll("*.ape");
+-    if(!avcodec_find_decoder(CODEC_ID_TTA))
++    if(!avcodec_find_decoder(AV_CODEC_ID_TTA))
+         filters.removeAll("*.tta");
+-    if(!avcodec_find_decoder(CODEC_ID_AAC))
++    if(!avcodec_find_decoder(AV_CODEC_ID_AAC))
+         filters.removeAll("*.aac");
+-    if(!avcodec_find_decoder(CODEC_ID_MP3))
++    if(!avcodec_find_decoder(AV_CODEC_ID_MP3))
+         filters.removeAll("*.mp3");
+-    if(!avcodec_find_decoder(CODEC_ID_AAC) && !avcodec_find_decoder(CODEC_ID_ALAC))
++    if(!avcodec_find_decoder(AV_CODEC_ID_AAC) && !avcodec_find_decoder(AV_CODEC_ID_ALAC))
+         filters.removeAll("*.m4a");
+-    if(!avcodec_find_decoder(CODEC_ID_RA_288))
++    if(!avcodec_find_decoder(AV_CODEC_ID_RA_288))
+         filters.removeAll("*.ra");
+-    if(!avcodec_find_decoder(CODEC_ID_SHORTEN))
++    if(!avcodec_find_decoder(AV_CODEC_ID_SHORTEN))
+         filters.removeAll("*.shn");
+-    if(!avcodec_find_decoder(CODEC_ID_EAC3))
++    if(!avcodec_find_decoder(AV_CODEC_ID_EAC3))
+         filters.removeAll("*.ac3");
+-    if(!avcodec_find_decoder(CODEC_ID_DTS))
++    if(!avcodec_find_decoder(AV_CODEC_ID_DTS))
+         filters.removeAll("*.dts");
+-    if(!avcodec_find_decoder(CODEC_ID_TRUEHD))
++    if(!avcodec_find_decoder(AV_CODEC_ID_TRUEHD))
+         filters.removeAll("*.mka");
+-    if(!avcodec_find_decoder(CODEC_ID_TWINVQ))
++    if(!avcodec_find_decoder(AV_CODEC_ID_TWINVQ))
+         filters.removeAll("*.vqf");
+ 
+ 
+diff -ur qmmp-0.7.1/src/plugins/Input/ffmpeg/settingsdialog.cpp qmmp-0.7.1.ffmpeg3/src/plugins/Input/ffmpeg/settingsdialog.cpp
+--- qmmp-0.7.1/src/plugins/Input/ffmpeg/settingsdialog.cpp	2013-05-31 11:03:32.000000000 +0200
++++ qmmp-0.7.1.ffmpeg3/src/plugins/Input/ffmpeg/settingsdialog.cpp	2016-04-16 19:22:24.964510907 +0200
+@@ -38,30 +38,30 @@
+     QStringList filters;
+     filters << "*.wma" << "*.ape" << "*.tta" << "*.m4a" << "*.ra" << "*.shn" << "*.vqf" << "*.ac3";
+     filters = settings.value("FFMPEG/filters", filters).toStringList();
+-    ui.wmaCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_WMAV1));
+-    ui.wmaCheckBox->setChecked(filters.contains("*.wma") && avcodec_find_decoder(CODEC_ID_WMAV1));
+-    ui.apeCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_APE));
+-    ui.apeCheckBox->setChecked(filters.contains("*.ape") && avcodec_find_decoder(CODEC_ID_APE));
+-    ui.ttaCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_TTA));
+-    ui.ttaCheckBox->setChecked(filters.contains("*.tta") && avcodec_find_decoder(CODEC_ID_TTA));
+-    ui.aacCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_AAC));
+-    ui.aacCheckBox->setChecked(filters.contains("*.aac") && avcodec_find_decoder(CODEC_ID_AAC));
+-    ui.mp3CheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_MP3));
+-    ui.mp3CheckBox->setChecked(filters.contains("*.mp3") && avcodec_find_decoder(CODEC_ID_MP3));
+-    ui.mp4CheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_AAC));
+-    ui.mp4CheckBox->setChecked(filters.contains("*.m4a") && (avcodec_find_decoder(CODEC_ID_AAC)
+-                                                             || avcodec_find_decoder(CODEC_ID_ALAC)));
+-    ui.raCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_RA_288));
+-    ui.raCheckBox->setChecked(filters.contains("*.ra") && avcodec_find_decoder(CODEC_ID_RA_288));
+-    ui.shCheckBox->setChecked(filters.contains("*.shn") && avcodec_find_decoder(CODEC_ID_SHORTEN));
+-    ui.ac3CheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_EAC3));
+-    ui.ac3CheckBox->setChecked(filters.contains("*.ac3") && avcodec_find_decoder(CODEC_ID_EAC3));
+-    ui.dtsCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_DTS));
+-    ui.dtsCheckBox->setChecked(filters.contains("*.dts") && avcodec_find_decoder(CODEC_ID_DTS));
+-    ui.mkaCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_TRUEHD));
+-    ui.mkaCheckBox->setChecked(filters.contains("*.mka") && avcodec_find_decoder(CODEC_ID_TRUEHD));
+-    ui.vqfCheckBox->setEnabled(avcodec_find_decoder(CODEC_ID_TWINVQ));
+-    ui.vqfCheckBox->setChecked(filters.contains("*.vqf") && avcodec_find_decoder(CODEC_ID_TWINVQ));
++    ui.wmaCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_WMAV1));
++    ui.wmaCheckBox->setChecked(filters.contains("*.wma") && avcodec_find_decoder(AV_CODEC_ID_WMAV1));
++    ui.apeCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_APE));
++    ui.apeCheckBox->setChecked(filters.contains("*.ape") && avcodec_find_decoder(AV_CODEC_ID_APE));
++    ui.ttaCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_TTA));
++    ui.ttaCheckBox->setChecked(filters.contains("*.tta") && avcodec_find_decoder(AV_CODEC_ID_TTA));
++    ui.aacCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_AAC));
++    ui.aacCheckBox->setChecked(filters.contains("*.aac") && avcodec_find_decoder(AV_CODEC_ID_AAC));
++    ui.mp3CheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_MP3));
++    ui.mp3CheckBox->setChecked(filters.contains("*.mp3") && avcodec_find_decoder(AV_CODEC_ID_MP3));
++    ui.mp4CheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_AAC));
++    ui.mp4CheckBox->setChecked(filters.contains("*.m4a") && (avcodec_find_decoder(AV_CODEC_ID_AAC)
++                                                             || avcodec_find_decoder(AV_CODEC_ID_ALAC)));
++    ui.raCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_RA_288));
++    ui.raCheckBox->setChecked(filters.contains("*.ra") && avcodec_find_decoder(AV_CODEC_ID_RA_288));
++    ui.shCheckBox->setChecked(filters.contains("*.shn") && avcodec_find_decoder(AV_CODEC_ID_SHORTEN));
++    ui.ac3CheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_EAC3));
++    ui.ac3CheckBox->setChecked(filters.contains("*.ac3") && avcodec_find_decoder(AV_CODEC_ID_EAC3));
++    ui.dtsCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_DTS));
++    ui.dtsCheckBox->setChecked(filters.contains("*.dts") && avcodec_find_decoder(AV_CODEC_ID_DTS));
++    ui.mkaCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_TRUEHD));
++    ui.mkaCheckBox->setChecked(filters.contains("*.mka") && avcodec_find_decoder(AV_CODEC_ID_TRUEHD));
++    ui.vqfCheckBox->setEnabled(avcodec_find_decoder(AV_CODEC_ID_TWINVQ));
++    ui.vqfCheckBox->setChecked(filters.contains("*.vqf") && avcodec_find_decoder(AV_CODEC_ID_TWINVQ));
+ }
+ 
+ SettingsDialog::~SettingsDialog()
