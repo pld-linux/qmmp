@@ -1,24 +1,28 @@
 # TODO: Output/oss4 plugin (R: soundcard.h from OSS 4)
+#
+# Conditional build:
+%bcond_with	jack1	# JACK1 (0.12x) instead of JACK2 (1.9.x)
+
 Summary:	XMMS like audio player based on Qt
 Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
-Version:	0.10.8
+Version:	1.1.8
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	5504999a4a0ee477367871ff181be4d6
+# Source0-md5:	b85b6901a66d3af28b9abfa577156c41
 URL:		http://qmmp.ylsoftware.com/
-BuildRequires:	Qt3Support-devel >= 4.6
-BuildRequires:	QtCore-devel >= 4.6
-BuildRequires:	QtDBus-devel >= 4.6
-BuildRequires:	QtGui-devel >= 4.6
-BuildRequires:	QtMultimedia-devel >= 4.6
-BuildRequires:	QtNetwork-devel >= 4.6
-BuildRequires:	QtOpenGL-devel >= 4.6
+BuildRequires:	Qt5Core-devel >= 5.4.0
+BuildRequires:	Qt5DBus-devel >= 5.4.0
+BuildRequires:	Qt5Gui-devel >= 5.4.0
+BuildRequires:	Qt5Multimedia-devel >= 5.4.0
+BuildRequires:	Qt5Network-devel >= 5.4.0
+BuildRequires:	Qt5Widgets-devel >= 5.4.0
+BuildRequires:	Qt5X11Extras-devel >= 5.4.0
 BuildRequires:	alsa-lib-devel >= 1.0.1
-BuildRequires:	cmake >= 2.8.6
+BuildRequires:	cmake >= 2.8.11
 BuildRequires:	curl-devel >= 7.16
 BuildRequires:	enca-devel >= 1.9
 BuildRequires:	faad2-devel >= 2.6.1
@@ -27,7 +31,8 @@ BuildRequires:	ffmpeg-devel >= 0.9.1
 BuildRequires:	flac-devel >= 1.1.3
 BuildRequires:	game-music-emu-devel >= 0.5.5
 BuildRequires:	gettext-tools
-BuildRequires:	jack-audio-connection-kit-devel >= 0.102.5
+%{?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 0.102.5}
+%{!?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 1.9.8}
 BuildRequires:	libbs2b-devel >= 3.0.0
 BuildRequires:	libcddb-devel >= 1.3.1
 BuildRequires:	libcdio-devel >= 0.80
@@ -47,8 +52,8 @@ BuildRequires:	opus-devel >= 1.0.2
 BuildRequires:	opusfile-devel >= 0.2
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.15
-BuildRequires:	qt4-build >= 4.6.0
-BuildRequires:	qt4-linguist >= 4.6.0
+BuildRequires:	qt5-build >= 5.4.0
+BuildRequires:	qt5-linguist >= 5.4.0
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
 BuildRequires:	soxr-devel >= 0.1.0
@@ -56,20 +61,20 @@ BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	wavpack-devel >= 4.41
 BuildRequires:	wildmidi-devel >= 0.2.3.4
 BuildRequires:	xorg-lib-libX11-devel
-Requires:	Qt3Support >= 4.6
-Requires:	QtCore >= 4.6
-Requires:	QtDBus >= 4.6
-Requires:	QtGui >= 4.6
-Requires:	QtMultimedia >= 4.6
-Requires:	QtNetwork >= 4.6
-Requires:	QtOpenGL >= 4.6
+Requires:	Qt5Core >= 5.4.0
+Requires:	Qt5DBus >= 5.4.0
+Requires:	Qt5Multimedia >= 5.4.0
+Requires:	Qt5Network >= 5.4.0
+Requires:	Qt5Widgets >= 5.4.0
+Requires:	Qt5X11Extras >= 5.4.0
 Requires:	curl-libs >= 7.16
 Requires:	enca-libs >= 1.9
 Requires:	faad2-libs >= 2.6.1
 Requires:	ffmpeg-libs >= 0.9.1
 Requires:	flac >= 1.1.3
 Requires:	game-music-emu >= 0.5.5
-Requires:	jack-audio-connection-kit-libs >= 0.102.5
+%{?with_jack1:Requires:	jack-audio-connection-kit-libs >= 0.102.5}
+%{!?with_jack1:Requires:	jack-audio-connection-kit-libs >= 1.9.8}
 Requires:	libbs2b >= 3.0.0
 Requires:	libcddb >= 1.3.1
 Requires:	libcdio >= 0.80
@@ -112,9 +117,10 @@ Summary:	Header files for qmmp
 Summary(pl.UTF-8):	Pliki nagłówkowe qmmp
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	QtCore-devel >= 4.6
-Requires:	QtGui-devel >= 4.6
-Requires:	QtNetwork-devel >= 4.6
+Requires:	Qt5Core-devel >= 5.4.0
+Requires:	Qt5Gui-devel >= 5.4.0
+Requires:	Qt5Network-devel >= 5.4.0
+Requires:	Qt5Widgets-devel >= 5.4.0
 
 %description devel
 Header files for qmmp.
@@ -152,9 +158,9 @@ rm -rf $RPM_BUILD_ROOT
 %lang(uk) %doc README.UKR
 %attr(755,root,root) %{_bindir}/qmmp
 %attr(755,root,root) %{_libdir}/libqmmp.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqmmp.so.0
+%attr(755,root,root) %ghost %{_libdir}/libqmmp.so.1
 %attr(755,root,root) %{_libdir}/libqmmpui.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.0
+%attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.1
 %dir %{_libdir}/qmmp/CommandLineOptions
 %attr(755,root,root) %{_libdir}/qmmp/CommandLineOptions/lib*option.so
 %dir %{_libdir}/qmmp/Effect
@@ -176,14 +182,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/qmmp/General/libcovermanager.so
 %attr(755,root,root) %{_libdir}/qmmp/General/libfileops.so
 %attr(755,root,root) %{_libdir}/qmmp/General/libgnomehotkey.so
-# R: QtDBus
+# R: Qt5DBus
 %attr(755,root,root) %{_libdir}/qmmp/General/libhal.so
 # R: libX11
 %attr(755,root,root) %{_libdir}/qmmp/General/libhotkey.so
-# R: QtDBus
+# R: Qt5DBus
 %attr(755,root,root) %{_libdir}/qmmp/General/libkdenotify.so
 %attr(755,root,root) %{_libdir}/qmmp/General/liblyrics.so
-# R: QtDBus
+# R: Qt5DBus
 %attr(755,root,root) %{_libdir}/qmmp/General/libmpris.so
 %attr(755,root,root) %{_libdir}/qmmp/General/libnotifier.so
 # R: taglib
@@ -192,7 +198,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/qmmp/General/libstatusicon.so
 %attr(755,root,root) %{_libdir}/qmmp/General/libstreambrowser.so
 %attr(755,root,root) %{_libdir}/qmmp/General/libtrackchange.so
-# R: QtDBus
+# R: Qt5DBus
 %attr(755,root,root) %{_libdir}/qmmp/General/libudisks2.so
 %dir %{_libdir}/qmmp/Input
 # R: faad2 taglib
