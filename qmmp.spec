@@ -128,7 +128,8 @@ Pliki nagłówkowe qmmp.
 %build
 install -d build
 cd build
-%cmake ..
+%cmake .. \
+	-DUSE_OSS=ON
 
 %{__make}
 
@@ -230,6 +231,7 @@ rm -rf $RPM_BUILD_ROOT
 # R: jack-audio-connection-kit-libs soxr
 %attr(755,root,root) %{_libdir}/qmmp/Output/libjack.so
 %attr(755,root,root) %{_libdir}/qmmp/Output/libnull.so
+%attr(755,root,root) %{_libdir}/qmmp/Output/liboss.so
 # R: pulseaudio-libs
 %attr(755,root,root) %{_libdir}/qmmp/Output/libpulseaudio.so
 # R: QtMultimedia
