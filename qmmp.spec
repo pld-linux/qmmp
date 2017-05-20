@@ -8,7 +8,7 @@ Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
 Version:	1.1.8
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
@@ -161,6 +161,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libqmmp.so.1
 %attr(755,root,root) %{_libdir}/libqmmpui.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.1
+%dir %{_libdir}/qmmp
 %dir %{_libdir}/qmmp/CommandLineOptions
 %attr(755,root,root) %{_libdir}/qmmp/CommandLineOptions/lib*option.so
 %dir %{_libdir}/qmmp/Effect
