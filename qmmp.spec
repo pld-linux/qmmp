@@ -8,7 +8,7 @@ Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
 Version:	1.1.8
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
@@ -61,8 +61,10 @@ BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	wavpack-devel >= 4.41
 BuildRequires:	wildmidi-devel >= 0.2.3.4
 BuildRequires:	xorg-lib-libX11-devel
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	Qt5Core >= 5.4.0
 Requires:	Qt5DBus >= 5.4.0
+Requires:	Qt5Gui >= 5.4.0
 Requires:	Qt5Multimedia >= 5.4.0
 Requires:	Qt5Network >= 5.4.0
 Requires:	Qt5Widgets >= 5.4.0
@@ -90,12 +92,12 @@ Requires:	opusfile >= 0.2
 Requires:	pulseaudio-libs >= 0.9.15
 Requires:	soxr >= 0.1.0
 Requires:	taglib >= 1.6
-Requires:	wavpack >= 4.41
+Requires:	wavpack-libs >= 4.41
 Requires:	wildmidi >= 0.2.3.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Audio player that supports:
+Qmmp (Qt-based Multimedia Player) is an audio player that supports:
 - file formats among: Vorbis, FLAC, MPEG1, WMA, WAV...
 - plugins,
 - Winamp and XMMS skins and more.
@@ -107,16 +109,33 @@ A lejátszó a következőket támogatja:
 - Wnamp és XMMS szkinek és még sok mást.
 
 %description -l pl.UTF-8
-Odtwarzacz audio obsługujący m.in.:
-- formaty plikow m.in.: Vorbis, FLAC, MPEG1, WMA, WAV i inne,
+Qmmp (Qt-based Multimedia Player) to odtwarzacz dźwięku obsługujący
+m.in.:
+- formaty plików: Vorbis, FLAC, MPEG1, WMA, WAV i inne,
 - system wtyczek,
 - skórki z XMMS i Winampa.
+
+%package libs
+Summary:	Qmmp (Qt-based Multimedia Player) shared libraries
+Summary(pl.UTF-8):	Biblioteki współdzielone odtwarzacza dźwięku Qmmp
+Group:		Libraries
+Requires:	Qt5Core >= 5.4.0
+Requires:	Qt5Gui >= 5.4.0
+Requires:	Qt5Network >= 5.4.0
+Requires:	Qt5Widgets >= 5.4.0
+Conflicts:	qmmp < 1.1.8-3
+
+%description libs
+Qmmp (Qt-based Multimedia Player) shared libraries.
+
+%description libs -l pl.UTF-8
+Biblioteki współdzielone odtwarzacza dźwięku Qmmp, opartego na Qt.
 
 %package devel
 Summary:	Header files for qmmp
 Summary(pl.UTF-8):	Pliki nagłówkowe qmmp
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	Qt5Core-devel >= 5.4.0
 Requires:	Qt5Gui-devel >= 5.4.0
 Requires:	Qt5Network-devel >= 5.4.0
@@ -148,8 +167,8 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -157,10 +176,6 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ru) %doc ChangeLog.rus README.RUS
 %lang(uk) %doc README.UKR
 %attr(755,root,root) %{_bindir}/qmmp
-%attr(755,root,root) %{_libdir}/libqmmp.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqmmp.so.1
-%attr(755,root,root) %{_libdir}/libqmmpui.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.1
 %dir %{_libdir}/qmmp
 %dir %{_libdir}/qmmp/CommandLineOptions
 %attr(755,root,root) %{_libdir}/qmmp/CommandLineOptions/lib*option.so
@@ -266,6 +281,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/*x*/apps/qmmp.png
 %{_iconsdir}/hicolor/scalable/apps/qmmp.svgz
 %{_iconsdir}/hicolor/scalable/apps/qmmp-simple.svgz
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libqmmp.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqmmp.so.1
+%attr(755,root,root) %{_libdir}/libqmmpui.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.1
 
 %files devel
 %defattr(644,root,root,755)
