@@ -85,7 +85,7 @@ Requires:	opusfile >= 0.2
 Requires:	pulseaudio-libs >= 0.9.15
 Requires:	soxr >= 0.1.0
 Requires:	taglib >= 1.6
-Requires:	wavpack >= 4.41
+Requires:	wavpack-libs >= 4.41
 Requires:	wildmidi >= 0.2.3.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -155,6 +155,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libqmmp.so.0
 %attr(755,root,root) %{_libdir}/libqmmpui.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.0
+%dir %{_libdir}/qmmp
 %dir %{_libdir}/qmmp/CommandLineOptions
 %attr(755,root,root) %{_libdir}/qmmp/CommandLineOptions/lib*option.so
 %dir %{_libdir}/qmmp/Effect
