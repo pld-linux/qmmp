@@ -7,12 +7,12 @@ Summary:	XMMS like audio player based on Qt
 Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
-Version:	1.1.8
-Release:	4
+Version:	1.2.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	b85b6901a66d3af28b9abfa577156c41
+# Source0-md5:	cc3468fe610412e2db5113d8ce0a379e
 URL:		http://qmmp.ylsoftware.com/
 BuildRequires:	Qt5Core-devel >= 5.4.0
 BuildRequires:	Qt5DBus-devel >= 5.4.0
@@ -26,13 +26,14 @@ BuildRequires:	cmake >= 2.8.11
 BuildRequires:	curl-devel >= 7.16
 BuildRequires:	enca-devel >= 1.9
 BuildRequires:	faad2-devel >= 2.6.1
-# libavcodec>=53.34.0 libavformat>=53.20.0 libavutil>=51.21.0
-BuildRequires:	ffmpeg-devel >= 0.9.1
+# libavcodec>=55.18.102 libavformat>=55.12.1000 libavutil>=52.38.100
+BuildRequires:	ffmpeg-devel >= 2.0
 BuildRequires:	flac-devel >= 1.1.3
 BuildRequires:	game-music-emu-devel >= 0.5.5
 BuildRequires:	gettext-tools
-%{?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 0.102.5}
+%{?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 0.122.0}
 %{!?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 1.9.8}
+BuildRequires:	libarchive-devel >= 3.2.0
 BuildRequires:	libbs2b-devel >= 3.0.0
 BuildRequires:	libcddb-devel >= 1.3.1
 BuildRequires:	libcdio-devel >= 0.80
@@ -44,8 +45,9 @@ BuildRequires:	libmpcdec-devel >= 1.2.6
 BuildRequires:	libogg-devel
 BuildRequires:	libprojectM-devel >= 2.0.0
 BuildRequires:	libsamplerate-devel >= 0.1.2
+BuildRequires:	libshout-devel
 BuildRequires:	libsidplayfp-devel >= 1.0.3
-BuildRequires:	libsndfile-devel >= 1.0.17
+BuildRequires:	libsndfile-devel >= 1.0.21
 BuildRequires:	libstdc++-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	opus-devel >= 1.0.2
@@ -57,7 +59,7 @@ BuildRequires:	qt5-linguist >= 5.4.0
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
 BuildRequires:	soxr-devel >= 0.1.0
-BuildRequires:	taglib-devel >= 1.6
+BuildRequires:	taglib-devel >= 1.11
 BuildRequires:	wavpack-devel >= 4.41
 BuildRequires:	wildmidi-devel >= 0.2.3.4
 BuildRequires:	xorg-lib-libX11-devel
@@ -72,11 +74,12 @@ Requires:	Qt5X11Extras >= 5.4.0
 Requires:	curl-libs >= 7.16
 Requires:	enca-libs >= 1.9
 Requires:	faad2-libs >= 2.6.1
-Requires:	ffmpeg-libs >= 0.9.1
+Requires:	ffmpeg-libs >= 2.0
 Requires:	flac >= 1.1.3
 Requires:	game-music-emu >= 0.5.5
 %{?with_jack1:Requires:	jack-audio-connection-kit-libs >= 0.102.5}
 %{!?with_jack1:Requires:	jack-audio-connection-kit-libs >= 1.9.8}
+Requires:	libarchive >= 3.2.0
 Requires:	libbs2b >= 3.0.0
 Requires:	libcddb >= 1.3.1
 Requires:	libcdio >= 0.80
@@ -86,12 +89,12 @@ Requires:	libmodplug >= 0.8.4
 Requires:	libmpcdec >= 1.2.6
 Requires:	libprojectM >= 2.0.0
 Requires:	libsidplayfp >= 1.0.3
-Requires:	libsndfile >= 1.0.17
+Requires:	libsndfile >= 1.0.21
 Requires:	opus >= 1.0.2
 Requires:	opusfile >= 0.2
 Requires:	pulseaudio-libs >= 0.9.15
 Requires:	soxr >= 0.1.0
-Requires:	taglib >= 1.6
+Requires:	taglib >= 1.11
 Requires:	wavpack-libs >= 4.41
 Requires:	wildmidi >= 0.2.3.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -183,6 +186,8 @@ rm -rf $RPM_BUILD_ROOT
 # R: libbs2b
 %attr(755,root,root) %{_libdir}/qmmp/Effect/libbs2b.so
 %attr(755,root,root) %{_libdir}/qmmp/Effect/libcrossfade.so
+# R: libogg libvorbis
+%attr(755,root,root) %{_libdir}/qmmp/Effect/libfilewriter.so
 %attr(755,root,root) %{_libdir}/qmmp/Effect/libladspa.so
 # R: soxr
 %attr(755,root,root) %{_libdir}/qmmp/Effect/libsoxr.so
@@ -207,6 +212,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/qmmp/General/liblyrics.so
 # R: Qt5DBus
 %attr(755,root,root) %{_libdir}/qmmp/General/libmpris.so
+# R: Q5X11Extras libX11
 %attr(755,root,root) %{_libdir}/qmmp/General/libnotifier.so
 # R: taglib
 %attr(755,root,root) %{_libdir}/qmmp/General/librgscan.so
@@ -219,6 +225,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/qmmp/Input
 # R: faad2 taglib
 %attr(755,root,root) %{_libdir}/qmmp/Input/libaac.so
+# R: libarchive
+%attr(755,root,root) %{_libdir}/qmmp/Input/libarchive.so
 # R: libcddb libcdio libcdio-paranoia
 %attr(755,root,root) %{_libdir}/qmmp/Input/libcdaudio.so
 # R: enca-libs
@@ -258,6 +266,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/qmmp/Output/libpulseaudio.so
 # R: QtMultimedia
 %attr(755,root,root) %{_libdir}/qmmp/Output/libqtmultimedia.so
+# R: libogg libshout libvorbis soxr
+%attr(755,root,root) %{_libdir}/qmmp/Output/libshout.so
 %dir %{_libdir}/qmmp/PlayListFormats
 %attr(755,root,root) %{_libdir}/qmmp/PlayListFormats/lib*playlistformat.so
 %dir %{_libdir}/qmmp/Transports
