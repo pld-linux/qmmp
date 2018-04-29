@@ -8,11 +8,12 @@ Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
 Version:	1.2.0
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
 # Source0-md5:	cc3468fe610412e2db5113d8ce0a379e
+Patch0:		ffmpeg4.patch
 URL:		http://qmmp.ylsoftware.com/
 BuildRequires:	Qt5Core-devel >= 5.4.0
 BuildRequires:	Qt5DBus-devel >= 5.4.0
@@ -152,6 +153,7 @@ Pliki nagłówkowe qmmp.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 install -d build

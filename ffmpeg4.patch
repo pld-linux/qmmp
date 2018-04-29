@@ -1,0 +1,11 @@
+--- qmmp-1.2.0/src/plugins/Input/ffmpeg/decoder_ffmpeg.h~	2017-11-25 11:45:02.000000000 +0100
++++ qmmp-1.2.0/src/plugins/Input/ffmpeg/decoder_ffmpeg.h	2018-04-29 21:31:46.124815253 +0200
+@@ -61,7 +61,7 @@
+     AVPacket m_pkt;
+     AVPacket m_temp_pkt;
+     qint64 m_output_at;
+-    uchar m_input_buf[INPUT_BUFFER_SIZE + FF_INPUT_BUFFER_PADDING_SIZE];
++    uchar m_input_buf[INPUT_BUFFER_SIZE + AV_INPUT_BUFFER_PADDING_SIZE];
+     int64_t m_seekTime;
+     qint64  m_skipBytes;
+     int m_channels;
