@@ -7,12 +7,12 @@ Summary:	XMMS like audio player based on Qt
 Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
-Version:	1.3.2
-Release:	3
+Version:	1.6.5
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
-Source0:	http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	643574bb87c2bdc7ec5e92c6cd0bbcb0
+Source0:	http://qmmp.ylsoftware.com/files/qmmp/1.6/%{name}-%{version}.tar.bz2
+# Source0-md5:	15443877d70916f968fa798ab866bfd7
 URL:		http://qmmp.ylsoftware.com/
 BuildRequires:	Qt5Core-devel >= 5.4.0
 BuildRequires:	Qt5DBus-devel >= 5.4.0
@@ -51,6 +51,7 @@ BuildRequires:	libvorbis-devel
 BuildRequires:	musepack-devel
 BuildRequires:	opus-devel >= 1.0.2
 BuildRequires:	opusfile-devel >= 0.2
+BuildRequires:	pipewire-devel
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.15
 BuildRequires:	qt5-build >= 5.4.0
@@ -176,135 +177,143 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS COPYING.CC-by-sa_V4 ChangeLog ChangeLog.svn README
 %lang(ru) %doc ChangeLog.rus README.RUS
 %lang(uk) %doc README.UKR
-%attr(755,root,root) %{_bindir}/qmmp
-%dir %{_libdir}/qmmp-1.3
-%dir %{_libdir}/qmmp-1.3/CommandLineOptions
-%attr(755,root,root) %{_libdir}/qmmp-1.3/CommandLineOptions/lib*option.so
-%dir %{_libdir}/qmmp-1.3/Effect
+%attr(755,root,root) %{_bindir}/qmmp-1
+%dir %{_libdir}/qmmp-1.6
+%dir %{_libdir}/qmmp-1.6/CommandLineOptions
+%attr(755,root,root) %{_libdir}/qmmp-1.6/CommandLineOptions/lib*option.so
+%dir %{_libdir}/qmmp-1.6/Effect
 # R: libbs2b
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Effect/libbs2b.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Effect/libcrossfade.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Effect/libbs2b.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Effect/libcrossfade.so
 # R: libogg libvorbis
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Effect/libfilewriter.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Effect/libladspa.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Effect/libfilewriter.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Effect/libladspa.so
 # R: soxr
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Effect/libsoxr.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Effect/libstereo.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Effect/libmonotostereo.so
-%dir %{_libdir}/qmmp-1.3/Engines
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Engines/libmplayer.so
-%dir %{_libdir}/qmmp-1.3/FileDialogs
-%attr(755,root,root) %{_libdir}/qmmp-1.3/FileDialogs/lib*dialog.so
-%dir %{_libdir}/qmmp-1.3/General
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Effect/libsoxr.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Effect/libstereo.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Effect/libmonotostereo.so
+%dir %{_libdir}/qmmp-1.6/Engines
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Engines/libmplayer.so
+%dir %{_libdir}/qmmp-1.6/FileDialogs
+%attr(755,root,root) %{_libdir}/qmmp-1.6/FileDialogs/lib*dialog.so
+%dir %{_libdir}/qmmp-1.6/General
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/liblibrary.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/liblistenbrainz.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libsleepinhibitor.so
 # R: taglib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libconverter.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libcopypaste.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libcovermanager.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libfileops.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libgnomehotkey.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libconverter.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libcopypaste.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libcovermanager.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libfileops.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libgnomehotkey.so
 # R: Qt5DBus
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libhal.so
+#%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libhal.so
 # R: libX11
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libhotkey.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libhotkey.so
 # R: Qt5DBus
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libkdenotify.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/liblyrics.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libkdenotify.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/liblyrics.so
 # R: Qt5DBus
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libmpris.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libmpris.so
 # R: Q5X11Extras libX11
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libnotifier.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libnotifier.so
 # R: taglib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/librgscan.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libscrobbler.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libstatusicon.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libstreambrowser.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libtrackchange.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/librgscan.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libscrobbler.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libstatusicon.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libstreambrowser.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libtrackchange.so
 # R: Qt5DBus
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libudisks2.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/General/libhistory.so
-%dir %{_libdir}/qmmp-1.3/Input
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libudisks.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/General/libhistory.so
+%dir %{_libdir}/qmmp-1.6/Input
 # R: faad2 taglib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libaac.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libaac.so
 # R: libarchive
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libarchive.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libarchive.so
 # R: libcddb libcdio libcdio-paranoia
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libcdaudio.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libcdaudio.so
 # R: enca-libs
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libcue.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libcue.so
 # R: ffmpeg-libs
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libffmpeg.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libffmpeg.so
 # R: flac taglib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libflac.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libflac.so
 # R: game-music-emu
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libgme.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libgme.so
 # R: libmodplug
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libmodplug.so
+#%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libmodplug.so
 # R: libmpcdec taglib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libmpc.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libmpc.so
 # R: opus opusfile taglib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libopus.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libopus.so
 # R: libsidplayfp
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libsid.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libsid.so
 # R: libsndfile
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libsndfile.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libsndfile.so
 # R: libvorbis taglib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libvorbis.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libvorbis.so
 # R: wavpack
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libwavpack.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libwavpack.so
 # R: wildmidi
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libwildmidi.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Input/libmpeg.so
-%dir %{_libdir}/qmmp-1.3/Output
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libwildmidi.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libmpeg.so
+%dir %{_libdir}/qmmp-1.6/Output
 # R: alsa-lib
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Output/libalsa.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/libalsa.so
 # R: jack-audio-connection-kit-libs soxr
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Output/libjack.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Output/libnull.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Output/liboss.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/libjack.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/libnull.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/liboss.so
+# R: pipewire-devel
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/libpipewire.so
 # R: pulseaudio-libs
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Output/libpulseaudio.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/libpulseaudio.so
 # R: QtMultimedia
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Output/libqtmultimedia.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/libqtmultimedia.so
 # R: libogg libshout libvorbis soxr
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Output/libshout.so
-%dir %{_libdir}/qmmp-1.3/PlayListFormats
-%attr(755,root,root) %{_libdir}/qmmp-1.3/PlayListFormats/lib*playlistformat.so
-%dir %{_libdir}/qmmp-1.3/Transports
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Output/libshout.so
+%dir %{_libdir}/qmmp-1.6/PlayListFormats
+%attr(755,root,root) %{_libdir}/qmmp-1.6/PlayListFormats/lib*playlistformat.so
+%dir %{_libdir}/qmmp-1.6/Transports
 # R: curl-libs enca-libs
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Transports/libhttp.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Transports/libhttp.so
 # R: libmms
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Transports/libmms.so
-%dir %{_libdir}/qmmp-1.3/Ui
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Ui/libqsui.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Transports/libmms.so
+%dir %{_libdir}/qmmp-1.6/Ui
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Ui/libqsui.so
 # R: libX11
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Ui/libskinned.so
-%dir %{_libdir}/qmmp-1.3/Visual
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Visual/libanalyzer.so
-%attr(755,root,root) %{_libdir}/qmmp-1.3/Visual/libprojectm.so
-%{_desktopdir}/qmmp.desktop
-%{_desktopdir}/qmmp-dir.desktop
-%{_desktopdir}/qmmp-enqueue.desktop
-%dir %{_datadir}/qmmp
-%dir %{_datadir}/qmmp/images
-%{_datadir}/qmmp/images/*.png
-%dir %{_datadir}/qmmp/scripts
-%attr(755,root,root) %{_datadir}/qmmp/scripts/kwin.sh
-%{_iconsdir}/hicolor/*x*/apps/qmmp.png
-%{_iconsdir}/hicolor/scalable/apps/qmmp.svgz
-%{_iconsdir}/hicolor/scalable/apps/qmmp-simple.svgz
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Ui/libskinned.so
+%dir %{_libdir}/qmmp-1.6/Visual
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Visual/libanalyzer.so
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Visual/libprojectm.so
+%{_desktopdir}/qmmp-1.desktop
+%{_desktopdir}/qmmp-dir-1.desktop
+%{_desktopdir}/qmmp-enqueue-1.desktop
+%dir %{_datadir}/qmmp-1
+%dir %{_datadir}/qmmp-1/images
+%{_datadir}/qmmp-1/images/*.png
+%dir %{_datadir}/qmmp-1/scripts
+%attr(755,root,root) %{_datadir}/qmmp-1/scripts/kwin.sh
+%{_iconsdir}/hicolor/*x*/apps/qmmp-1.png
+%{_iconsdir}/hicolor/scalable/apps/qmmp-1.svgz
+%{_iconsdir}/hicolor/scalable/apps/qmmp-simple-1.svgz
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libqmmp.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqmmp.so.1
-%attr(755,root,root) %{_libdir}/libqmmpui.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqmmpui.so.1
+%attr(755,root,root) %{_libdir}/libqmmp-1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqmmp-1.so.1
+%attr(755,root,root) %{_libdir}/libqmmpui-1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqmmpui-1.so.1
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libqmmp.so
-%attr(755,root,root) %{_libdir}/libqmmpui.so
-%{_includedir}/qmmp
-%{_includedir}/qmmpui
-%{_pkgconfigdir}/qmmp.pc
-%{_pkgconfigdir}/qmmpui.pc
+%attr(755,root,root) %{_libdir}/libqmmp-1.so
+%attr(755,root,root) %{_libdir}/libqmmpui-1.so
+%{_includedir}/qmmp-1
+%{_pkgconfigdir}/qmmp-1.pc
+%{_pkgconfigdir}/qmmpui-1.pc
+
+
+   /usr/share/metainfo/qmmp-1.appdata.xml
+   /usr/share/solid/actions/qmmp-opencda-1.desktop
