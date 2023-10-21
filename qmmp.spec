@@ -8,7 +8,7 @@ Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
 Version:	1.6.5
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.ylsoftware.com/files/qmmp/1.6/%{name}-%{version}.tar.bz2
@@ -48,6 +48,7 @@ BuildRequires:	libsidplayfp-devel >= 1.0.3
 BuildRequires:	libsndfile-devel >= 1.0.21
 BuildRequires:	libstdc++-devel
 BuildRequires:	libvorbis-devel
+BuildRequires:	libxmp-devel >= 4.2.0
 BuildRequires:	musepack-devel
 BuildRequires:	opus-devel >= 1.0.2
 BuildRequires:	opusfile-devel >= 0.2
@@ -96,6 +97,7 @@ Requires:	soxr >= 0.1.0
 Requires:	taglib >= 1.11
 Requires:	wavpack-libs >= 4.41
 Requires:	wildmidi >= 0.2.3.4
+Obsoletes:	qmmp-input-xmp < 1.6.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -241,8 +243,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libflac.so
 # R: game-music-emu
 %attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libgme.so
-# R: libmodplug
-#%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libmodplug.so
 # R: libmpcdec taglib
 %attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libmpc.so
 # R: opus opusfile taglib
@@ -255,6 +255,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libvorbis.so
 # R: wavpack
 %attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libwavpack.so
+# R: libxmp
+%attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libxmp.so
 # R: wildmidi
 %attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libwildmidi.so
 %attr(755,root,root) %{_libdir}/qmmp-1.6/Input/libmpeg.so
