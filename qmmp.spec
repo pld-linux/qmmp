@@ -8,7 +8,7 @@ Summary(hu.UTF-8):	XMMS-szerű Qt alapú audio-lejátszó
 Summary(pl.UTF-8):	Odtwarzacz muzyki w stylu XMMS oparty na Qt
 Name:		qmmp
 Version:	1.6.5
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://qmmp.ylsoftware.com/files/qmmp/1.6/%{name}-%{version}.tar.bz2
@@ -168,6 +168,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%{__rm} -r $RPM_BUILD_ROOT%{_iconsdir}/hicolor/56x56
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -300,6 +302,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/*x*/apps/qmmp-1.png
 %{_iconsdir}/hicolor/scalable/apps/qmmp-1.svgz
 %{_iconsdir}/hicolor/scalable/apps/qmmp-simple-1.svgz
+%{_metainfodir}/metainfo/qmmp-1.appdata.xml
+%{_datadir}/solid/actions/qmmp-opencda-1.desktop
 
 %files libs
 %defattr(644,root,root,755)
@@ -315,7 +319,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/qmmp-1
 %{_pkgconfigdir}/qmmp-1.pc
 %{_pkgconfigdir}/qmmpui-1.pc
-
-
-   /usr/share/metainfo/qmmp-1.appdata.xml
-   /usr/share/solid/actions/qmmp-opencda-1.desktop
